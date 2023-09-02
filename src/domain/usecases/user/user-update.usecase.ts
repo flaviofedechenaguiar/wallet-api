@@ -13,7 +13,7 @@ export class UserUpdateUseCase implements IUseCase {
     data.mapToEntity();
 
     const userWithSameEmail = await this.userRepository.findByEmail(data.email);
-    const isSameUser = userWithSameEmail.id === data.id;
+    const isSameUser = userWithSameEmail?.id === data.id;
     if (userWithSameEmail && !isSameUser)
       throw new Error('Email already existis.');
 

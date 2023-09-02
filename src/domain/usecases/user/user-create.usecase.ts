@@ -12,7 +12,7 @@ export class UserCreateUseCase implements IUseCase {
   async execute(data: UserData): Promise<void> {
     data.mapToEntity();
 
-    const userWithSameEmail = this.userRepository.findByEmail(data.email);
+    const userWithSameEmail = await this.userRepository.findByEmail(data.email);
     if (userWithSameEmail) throw new Error('Email already existis.');
 
     const encryptedPassword = await this.encrypt.hash(data.password);

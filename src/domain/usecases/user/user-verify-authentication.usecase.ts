@@ -2,7 +2,7 @@ import { IJWTAuthentication } from 'src/domain/contracts/jwt-authentication';
 import { IUseCase } from 'src/domain/contracts/usecase.contract';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
 
-export class UserVerifyAuthentication implements IUseCase {
+export class UserVerifyAuthenticationUseCase implements IUseCase {
   public constructor(
     private userRepository: IUserRepository,
     private authentication: IJWTAuthentication,
