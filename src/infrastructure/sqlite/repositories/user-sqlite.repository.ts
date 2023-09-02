@@ -1,6 +1,6 @@
 import { UserData } from 'src/domain/data/user.data';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
-import { DataSource } from 'typeorm';
+import { DataSource, Equal } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { SQLiteUserEntity } from '../entities/user-sqlite.entity';
 
@@ -36,8 +36,9 @@ export class SQLiteUserRepository implements IUserRepository {
     return new UserData(result.name, result.email, result.password, result.id);
   }
 
-  async findByEmail(email: string): Promise<UserData> {
-    const result = await this.user.findOneBy({ email });
+  async findByEmail(email: string): Promise<UserData | null> {
+    const result = await this.user.findOneBy({ email: Equal(email) });
+    if (!result) return null;
 
     return new UserData(result.name, result.email, result.password, result.id);
   }
