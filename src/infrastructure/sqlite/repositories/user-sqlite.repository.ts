@@ -1,5 +1,5 @@
 import { UserData } from 'src/domain/data/user.data';
-import { IUserRepository } from 'src/domain/repositories/user.repository';
+import { IUserRepository } from 'src/domain/repositories/user/user.repository';
 import { DataSource, Equal } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { SQLiteUserEntity } from '../entities/user-sqlite.entity';

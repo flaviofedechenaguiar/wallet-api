@@ -2,6 +2,10 @@ export class User {
   public constructor(
     public name: string,
     public email: string,
-    public password: string,
+    public password?: string,
   ) {}
+
+  public changePassword(password: string) {
+    this.password = password;
+  }
 }

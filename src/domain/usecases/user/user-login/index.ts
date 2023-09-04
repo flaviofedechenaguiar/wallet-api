@@ -1,14 +1,9 @@
 import { IEncrypt } from 'src/domain/contracts/encrypt.contracts';
 import { IJWTAuthentication } from 'src/domain/contracts/jwt-authentication';
 import { IUseCase } from 'src/domain/contracts/usecase.contract';
-import { UserLoginData } from 'src/domain/data/user-login.data';
-import { IUserRepository } from 'src/domain/repositories/user.repository';
-
-type Output = {
-  token: string;
-  name: string;
-  email: string;
-};
+import { IUserRepository } from 'src/domain/repositories/user/user.repository';
+import { LoginOutput } from './login-output';
+import { LoginInput } from './login-input';
 
 export class UserLoginUseCase implements IUseCase {
   public constructor(
@@ -17,7 +12,7 @@ export class UserLoginUseCase implements IUseCase {
     private authentication: IJWTAuthentication,
   ) {}
 
-  async execute(data: UserLoginData): Promise<Output> {
+  async execute(data: LoginInput): Promise<LoginOutput> {
     const user = await this.userRepository.findByEmail(data.email);
     if (!user) throw new Error('Email/Password incorrect.');
     const isCorrectPassword = await this.encrypt.compare(

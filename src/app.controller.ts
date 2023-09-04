@@ -4,24 +4,30 @@ import {
   Delete,
   Get,
   HttpCode,
-  Optional,
-  Param,
   Post,
   Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import {
-  UserCreateUseCase,
+  UserCreateAccountUseCase,
   UserDeleteUseCase,
   UserGetUseCase,
   UserLoginUseCase,
-  UserUpdateUseCase,
 } from './domain/usecases/user';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Match } from './nestjs/match.decorator';
 import { UserData } from './domain/data/user.data';
 import { AuthGuard } from './auth.guard';
+import { CreateAccountInput } from './domain/usecases/user/create-account/create-account-input';
+import { UserUpdateAccountUseCase } from './domain/usecases/user/update-account';
+import { UpdateAccountInput } from './domain/usecases/user/update-account/update-account-input';
 
 class StoreRequest {
   @IsNotEmpty()
@@ -36,6 +42,14 @@ class StoreRequest {
   @IsNotEmpty()
   @Match('password')
   confirm_password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  wallet_description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  wallet_amount: number;
 }
 
 class UpdateRequest {
@@ -64,8 +78,8 @@ class LoginRequest {
 @Controller('users')
 export class AppController {
   constructor(
-    private readonly userCreateUseCase: UserCreateUseCase,
-    private readonly userUpdateUseCase: UserUpdateUseCase,
+    private readonly userUpdateAccountUseCase: UserUpdateAccountUseCase,
+    private readonly userCreateAccountUseCase: UserCreateAccountUseCase,
     private readonly userLoginUseCase: UserLoginUseCase,
     private readonly userDeleteUseCase: UserDeleteUseCase,
     private readonly userGetUseCase: UserGetUseCase,
@@ -83,8 +97,14 @@ export class AppController {
   @HttpCode(201)
   @Post()
   async store(@Body() body: StoreRequest): Promise<void> {
-    const input = new UserData(body.name, body.email, body.password);
-    await this.userCreateUseCase.execute(input);
+    const input = new CreateAccountInput(
+      body.name,
+      body.email,
+      body.password,
+      body.wallet_description,
+      body.wallet_amount,
+    );
+    await this.userCreateAccountUseCase.execute(input);
   }
 
   @UseGuards(AuthGuard)
@@ -95,8 +115,13 @@ export class AppController {
     @Body() body: UpdateRequest,
   ): Promise<void> {
     const userId = request['userId'];
-    const input = new UserData(body.name, body.email, body.password, +userId);
-    await this.userUpdateUseCase.execute(input);
+    const input = new UpdateAccountInput(
+      +userId,
+      body.name,
+      body.email,
+      body.password,
+    );
+    await this.userUpdateAccountUseCase.execute(input);
   }
 
   @HttpCode(200)
