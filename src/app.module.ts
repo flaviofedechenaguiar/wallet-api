@@ -65,12 +65,12 @@ const UseCasesProviders = [
   {
     provide: UserCreateAccountUseCase,
     useFactory: (
-      adminRepository: IUserRepository,
+      userRepository: IUserRepository,
       accountRepository: IAccountRepository,
       encrypt: IEncrypt,
     ) => {
       return new UserCreateAccountUseCase(
-        adminRepository,
+        userRepository,
         accountRepository,
         encrypt,
       );

@@ -13,15 +13,13 @@ export class UserCreateAccountUseCase implements IUseCase {
   ) {}
 
   async execute(data: CreateAccountInput): Promise<void> {
-    const [user, wallet] = [data.mapToUserEntity(), data.mapToWalletEntity()];
+    const user = data.mapToEntity();
     const userWithSameEmail = await this.userRepository.findByEmail(user.email);
     if (userWithSameEmail) throw new Error('Email already existis.');
 
     const encryptedPassword = await this.encrypt.hash(data.password);
     user.changePassword(encryptedPassword);
 
-    await this.accountRepository.create(
-      CreateAccountData.mapFromEntity(user, wallet),
-    );
+    await this.accountRepository.create(CreateAccountData.mapFromEntity(user));
   }
 }

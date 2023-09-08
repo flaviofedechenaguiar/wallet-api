@@ -42,14 +42,6 @@ class StoreRequest {
   @IsNotEmpty()
   @Match('password')
   confirm_password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  wallet_description: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  wallet_amount: number;
 }
 
 class UpdateRequest {
@@ -97,13 +89,7 @@ export class AppController {
   @HttpCode(201)
   @Post()
   async store(@Body() body: StoreRequest): Promise<void> {
-    const input = new CreateAccountInput(
-      body.name,
-      body.email,
-      body.password,
-      body.wallet_description,
-      body.wallet_amount,
-    );
+    const input = new CreateAccountInput(body.name, body.email, body.password);
     await this.userCreateAccountUseCase.execute(input);
   }
 
