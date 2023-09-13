@@ -19,6 +19,9 @@ export class SQLiteWalletEntity {
   description: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   amount: number;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -33,4 +36,7 @@ export class SQLiteWalletEntity {
   @ManyToOne(() => SQLiteUserEntity)
   @JoinColumn({ name: 'user_id' })
   user: SQLiteUserEntity;
+
+  @Column({ nullable: false })
+  user_id: number;
 }
