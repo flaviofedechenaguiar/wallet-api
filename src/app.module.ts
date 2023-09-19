@@ -1,32 +1,33 @@
 import { Module } from '@nestjs/common';
-import { AppController, WalletController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { SQLiteUserEntity } from './infrastructure/sqlite/entities/user-sqlite.entity';
-import { SQLiteUserRepository } from './infrastructure/sqlite/repositories/user-sqlite.repository';
 import { JWTAuthentication } from './infrastructure/authentication';
 import { EncryptBCrypt } from './infrastructure/encrypt';
-import { UserCreateAccountUseCase } from './domain/usecases/user/create-account';
-import { IUserRepository } from './domain/repositories/user/user.repository';
 import { IEncrypt } from './domain/contracts/encrypt.contracts';
 import { IJWTAuthentication } from './domain/contracts/jwt-authentication';
-import { UserDeleteUseCase } from './domain/usecases/user/user-delete.usecase';
-import { UserGetUseCase } from './domain/usecases/user/user-get';
-import { UserLoginUseCase } from './domain/usecases/user/user-login';
-import { AuthGuard } from './auth.guard';
-import { UserVerifyAuthenticationUseCase } from './domain/usecases/user';
-import { IAccountRepository } from './domain/repositories/account/account.repository';
-import { SQLiteWalletEntity } from './infrastructure/sqlite/entities/wallet-sqlite.entity';
-import { SQLiteAccountRepository } from './infrastructure/sqlite/repositories/account-sqlite.repository';
-import { UserUpdateAccountUseCase } from './domain/usecases/user/update-account';
-import { SQLiteWalletRepository } from './infrastructure/sqlite/repositories/wallet-sqlite.repository';
 import { SlugifyBuildSlug } from './infrastructure/slug';
-import { IWalletRepository } from './domain/repositories/wallet/wallet-repository';
-import { WalletCreateUseCase } from './domain/usecases/wallet/wallet-create.usecase';
 import { IBuildSlug } from './domain/contracts/build-slug';
-import { WalletUpdateUseCase } from './domain/usecases/wallet/wallet-update';
+import { UserRepository } from './domain/users/repositories/user.repository';
+import {
+  UserCreateAccountUseCase,
+  UserDeleteAccountUseCase,
+  UserGetAccountUseCaseCase,
+  UserLoginUseCase,
+  UserUpdateAccountUseCase,
+  UserVerifyAuthenticationUseCase,
+} from './domain/users/usecases';
+import { WalletRepository } from './domain/wallets/repositories/wallet.repository';
+import {
+  WalletCreateUseCase,
+  WalletUpdateUseCase,
+} from './domain/wallets/usecases';
+import { SQLiteUserEntity } from './domain/users/models/user.model';
+import { SQLiteWalletEntity } from './domain/wallets/models/wallet.model';
+import { UserController } from './presentation/users/controllers/user.controller';
+import { WalletController } from './presentation/wallets/controllers/wallet.controller';
+import { AuthGuard } from './presentation/users/guards/auth.guard';
 
-const TypeORMEntities = [SQLiteUserEntity, , SQLiteWalletEntity];
+const TypeORMEntities = [SQLiteUserEntity, SQLiteWalletEntity];
 
 const TypeORMSettings = TypeOrmModule.forRoot({
   type: 'sqlite',
@@ -53,8 +54,8 @@ const UseCasesProviders = [
   {
     provide: UserLoginUseCase,
     useFactory: (
-      userRepository: IUserRepository,
-      walletRepository: IWalletRepository,
+      userRepository: UserRepository,
+      walletRepository: WalletRepository,
       encrypt: IEncrypt,
       authentication: IJWTAuthentication,
     ) => {
@@ -66,52 +67,44 @@ const UseCasesProviders = [
       );
     },
     inject: [
-      SQLiteUserRepository,
-      SQLiteWalletRepository,
+      UserRepository,
+      WalletRepository,
       EncryptBCrypt,
       JWTAuthentication,
     ],
   },
   {
-    provide: UserGetUseCase,
-    useFactory: (adminRepository: IUserRepository) => {
-      return new UserGetUseCase(adminRepository);
+    provide: UserGetAccountUseCaseCase,
+    useFactory: (userRepository: UserRepository) => {
+      return new UserGetAccountUseCaseCase(userRepository);
     },
-    inject: [SQLiteUserRepository],
+    inject: [UserRepository],
   },
   {
     provide: UserCreateAccountUseCase,
-    useFactory: (
-      userRepository: IUserRepository,
-      accountRepository: IAccountRepository,
-      encrypt: IEncrypt,
-    ) => {
-      return new UserCreateAccountUseCase(
-        userRepository,
-        accountRepository,
-        encrypt,
-      );
+    useFactory: (userRepository: UserRepository, encrypt: IEncrypt) => {
+      return new UserCreateAccountUseCase(userRepository, encrypt);
     },
-    inject: [SQLiteUserRepository, SQLiteAccountRepository, EncryptBCrypt],
+    inject: [UserRepository, EncryptBCrypt],
   },
   {
     provide: UserUpdateAccountUseCase,
-    useFactory: (adminRepository: IUserRepository, encrypt: IEncrypt) => {
-      return new UserUpdateAccountUseCase(adminRepository, encrypt);
+    useFactory: (userRepository: UserRepository, encrypt: IEncrypt) => {
+      return new UserUpdateAccountUseCase(userRepository, encrypt);
     },
-    inject: [SQLiteUserRepository, EncryptBCrypt],
+    inject: [UserRepository, EncryptBCrypt],
   },
   {
-    provide: UserDeleteUseCase,
-    useFactory: (adminRepository: IUserRepository) => {
-      return new UserDeleteUseCase(adminRepository);
+    provide: UserDeleteAccountUseCase,
+    useFactory: (userRepository: UserRepository) => {
+      return new UserDeleteAccountUseCase(userRepository);
     },
-    inject: [SQLiteUserRepository],
+    inject: [UserRepository],
   },
   {
     provide: UserVerifyAuthenticationUseCase,
     useFactory: (
-      userRepository: IUserRepository,
+      userRepository: UserRepository,
       authentication: IJWTAuthentication,
     ) => {
       return new UserVerifyAuthenticationUseCase(
@@ -119,40 +112,32 @@ const UseCasesProviders = [
         authentication,
       );
     },
-    inject: [SQLiteUserRepository, JWTAuthentication],
+    inject: [UserRepository, JWTAuthentication],
   },
 
   //ANCHOR: WALLET
   {
     provide: WalletCreateUseCase,
-    useFactory: (
-      walletRepository: IWalletRepository,
-      buildSlug: IBuildSlug,
-    ) => {
+    useFactory: (walletRepository: WalletRepository, buildSlug: IBuildSlug) => {
       return new WalletCreateUseCase(walletRepository, buildSlug);
     },
-    inject: [SQLiteWalletRepository, SlugifyBuildSlug],
+    inject: [WalletRepository, SlugifyBuildSlug],
   },
   {
     provide: WalletUpdateUseCase,
-    useFactory: (
-      walletRepository: IWalletRepository,
-      buildSlug: IBuildSlug,
-    ) => {
+    useFactory: (walletRepository: WalletRepository, buildSlug: IBuildSlug) => {
       return new WalletUpdateUseCase(walletRepository, buildSlug);
     },
-    inject: [SQLiteWalletRepository, SlugifyBuildSlug],
+    inject: [WalletRepository, SlugifyBuildSlug],
   },
 ];
 
 @Module({
   imports: [TypeORMSettings, JWTSettings],
-  controllers: [AppController, WalletController],
+  controllers: [UserController, WalletController],
   providers: [
-    //ANCHOR: Repository
-    SQLiteUserRepository,
-    SQLiteAccountRepository,
-    SQLiteWalletRepository,
+    UserRepository,
+    WalletRepository,
 
     //ANCHOR: Others
     JWTAuthentication,
