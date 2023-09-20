@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"flavio@flavio324.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavo aguiar\",\n    \"email\": \"flavio@flavio.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,7 +85,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"flavio@flavio.com\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -175,6 +175,68 @@
 							],
 							"path": [
 								"wallets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},

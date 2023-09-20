@@ -6,12 +6,14 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { DomainError } from './support/erros/domain.error';
+import { EntityNotFoundError } from 'typeorm';
 
 @Catch(Error)
 export class ExceptionHandler implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+    console.log(error.constructor.name);
 
     if (error instanceof HttpException) {
       const httpExceptionResponse = error.getResponse();
@@ -30,6 +32,16 @@ export class ExceptionHandler implements ExceptionFilter {
         message: error.message,
         error: badRequest.error,
         statusCode: badRequest.statusCode,
+      });
+    }
+
+    if (error instanceof EntityNotFoundError) {
+      const notFound = { error: 'Not Found', statusCode: 404 };
+
+      return response.status(notFound.statusCode).json({
+        message: 'register not found',
+        error: notFound.error,
+        statusCode: notFound.statusCode,
       });
     }
 

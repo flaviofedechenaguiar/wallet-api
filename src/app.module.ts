@@ -26,6 +26,8 @@ import { SQLiteWalletEntity } from './domain/wallets/models/wallet.model';
 import { UserController } from './presentation/users/controllers/user.controller';
 import { WalletController } from './presentation/wallets/controllers/wallet.controller';
 import { AuthGuard } from './presentation/users/guards/auth.guard';
+import { WalletGetUseCase } from './domain/wallets/usecases/get-wallet.usecase';
+import { WalletGetAllUseCase } from './domain/wallets/usecases/get-all-wallet.usecase';
 
 const TypeORMEntities = [SQLiteUserEntity, SQLiteWalletEntity];
 
@@ -130,6 +132,8 @@ const UseCasesProviders = [
     },
     inject: [WalletRepository, SlugifyBuildSlug],
   },
+  WalletGetUseCase,
+  WalletGetAllUseCase,
 ];
 
 @Module({

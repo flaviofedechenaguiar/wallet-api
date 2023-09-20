@@ -28,15 +28,46 @@ export class WalletRepository {
     });
   }
 
+  async queryAllByUserId(userId: number): Promise<WalletData[]> {
+    const results = await this.wallet.find({
+      where: { user_id: Equal(userId) },
+    });
+
+    return results.map((wallet) => {
+      return {
+        id: wallet.id,
+        description: wallet.description,
+        slug: wallet.slug,
+        amount: wallet.amount,
+        userId: wallet.user_id,
+      };
+    });
+  }
+
+  async findByIdAndUserId(
+    id: number,
+    userId: number,
+  ): Promise<WalletData | null> {
+    const result = await this.wallet.findOne({
+      where: { id: Equal(id), user_id: Equal(userId) },
+    });
+    if (!result) return null;
+
+    return {
+      id: result.id,
+      description: result.description,
+      slug: result.slug,
+      amount: result.amount,
+      userId: result.user_id,
+    };
+  }
+
   async findBySlugAndUserId(
     slug: string,
     userId: number,
   ): Promise<WalletData | null> {
     const result = await this.wallet.findOne({
-      where: {
-        slug: Equal(slug),
-        user: { id: Equal(userId) },
-      },
+      where: { slug: Equal(slug), user: { id: Equal(userId) } },
     });
     if (!result) return null;
 
