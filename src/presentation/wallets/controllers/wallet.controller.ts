@@ -17,9 +17,9 @@ import { CreateWalletRequest } from '../dtos/create-wallet.dto';
 import { UpdateWalletRequest } from '../dtos/update-wallet.dto';
 import { AuthGuard } from 'src/presentation/users/guards/auth.guard';
 import { WalletGetUseCase } from 'src/domain/wallets/usecases/get-wallet.usecase';
-import { GetAllWalletOutput } from '../dtos/get-wallet.dto';
+import { GetAllWalletOutput } from '../dtos/get-all-wallet.dto';
 import { WalletGetAllUseCase } from 'src/domain/wallets/usecases/get-all-wallet.usecase';
-import { GetWalletOutput } from '../dtos/get-all-wallet.dto';
+import { GetWalletOutput } from '../dtos/get-wallet.dto';
 
 @Controller('wallets')
 export class WalletController {

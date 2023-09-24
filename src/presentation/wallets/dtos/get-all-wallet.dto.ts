@@ -1,5 +1,3 @@
-import { WalletData } from 'src/domain/wallets/dtos/wallet-data';
+import { GetWalletOutput } from './get-wallet.dto';
 
-export type GetWalletOutput = {
-  user_id: number;
-} & Omit<WalletData, 'userId'>;
+export type GetAllWalletOutput = GetWalletOutput[];
