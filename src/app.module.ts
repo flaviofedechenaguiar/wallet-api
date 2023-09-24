@@ -28,8 +28,21 @@ import { WalletController } from './presentation/wallets/controllers/wallet.cont
 import { AuthGuard } from './presentation/users/guards/auth.guard';
 import { WalletGetUseCase } from './domain/wallets/usecases/get-wallet.usecase';
 import { WalletGetAllUseCase } from './domain/wallets/usecases/get-all-wallet.usecase';
+import { IconEntity } from './domain/categories/models/icon.model';
+import { CategoryEntity } from './domain/categories/models/category.model';
+import { CategoryController } from './presentation/categories/controllers/category.controller';
+import { CategoryRepository } from './domain/categories/repositories/category.repository';
+import { CategoryCreateUseCase } from './domain/categories/usecases/create-category.usecase';
+import { CategoryUpdateUseCase } from './domain/categories/usecases/update-category.usecase';
+import { CategoryGetUseCase } from './domain/categories/usecases/get-category.usecase';
+import { CategoryGetAllUseCase } from './domain/categories/usecases/get-all-category.usecase';
 
-const TypeORMEntities = [SQLiteUserEntity, SQLiteWalletEntity];
+const TypeORMEntities = [
+  SQLiteUserEntity,
+  SQLiteWalletEntity,
+  IconEntity,
+  CategoryEntity,
+];
 
 const TypeORMSettings = TypeOrmModule.forRoot({
   type: 'sqlite',
@@ -134,14 +147,19 @@ const UseCasesProviders = [
   },
   WalletGetUseCase,
   WalletGetAllUseCase,
+  CategoryCreateUseCase,
+  CategoryUpdateUseCase,
+  CategoryGetUseCase,
+  CategoryGetAllUseCase,
 ];
 
 @Module({
   imports: [TypeORMSettings, JWTSettings],
-  controllers: [UserController, WalletController],
+  controllers: [UserController, WalletController, CategoryController],
   providers: [
     UserRepository,
     WalletRepository,
+    CategoryRepository,
 
     //ANCHOR: Others
     JWTAuthentication,
@@ -149,6 +167,10 @@ const UseCasesProviders = [
     ...UseCasesProviders,
     AuthGuard,
     SlugifyBuildSlug,
+    {
+      provide: IBuildSlug,
+      useClass: SlugifyBuildSlug,
+    },
   ],
 })
 export class AppModule {}
