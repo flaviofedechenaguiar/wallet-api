@@ -21,7 +21,7 @@ export class SQLiteWalletEntity {
   @Column()
   slug: string;
 
-  @Column()
+  @Column('decimal', { precision: 8, scale: 2, default: 0 })
   amount: number;
 
   @CreateDateColumn({ name: 'created_at' })
