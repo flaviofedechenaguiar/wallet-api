@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email010.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,7 +85,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\"\n}\n\n",
+							"raw": "{\n    \"email\": \"email@email010.com\",\n    \"password\": \"password\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@admin.com\",\n    \"password\": \"admin\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,13 +120,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/users/login",
+							"raw": "{{HOST}}/users",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"users",
-								"login"
+								"users"
 							]
 						}
 					},
@@ -161,7 +160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"flavio@flavio324.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"description\": \"second wallets\",\n    \"amount\": 1002\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,16 +181,9 @@
 				},
 				{
 					"name": "index",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
 						"url": {
 							"raw": "{{HOST}}/wallets/:id",
 							"host": [
@@ -204,7 +196,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "9"
 								}
 							]
 						}
@@ -222,70 +214,6 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": []
-						},
-						"url": {
-							"raw": "{{HOST}}/wallets/:id",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"wallets",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavo aguiar\",\n    \"email\": \"flavio@flavio.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/users",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Categories",
-			"item": [
-				{
-					"name": "store",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"flavio@flavio324.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
 						},
 						"url": {
 							"raw": "{{HOST}}/wallets",
@@ -306,7 +234,92 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"flavio@flavio324.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"description\": \"asdf\",\n    \"amount\": 1000.04\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/8",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/9",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Categoria Exemplo2\",\n    \"icon_id\": 1   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/categories",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Categoria Exemplo2\",\n    \"icon_id\": 1   \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,19 +352,13 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/wallets/:id",
+							"raw": "{{HOST}}/categories/2",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
+								"categories",
+								"2"
 							]
 						}
 					},
@@ -370,19 +377,12 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/wallets/:id",
+							"raw": "{{HOST}}/categories",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
+								"categories"
 							]
 						}
 					},
