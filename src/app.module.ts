@@ -37,6 +37,7 @@ import { CategoryUpdateUseCase } from './domain/categories/usecases/update-categ
 import { CategoryGetUseCase } from './domain/categories/usecases/get-category.usecase';
 import { CategoryGetAllUseCase } from './domain/categories/usecases/get-all-category.usecase';
 import { WalletDeleteUseCase } from './domain/wallets/usecases/delete-wallet.usecase';
+import { CategoryDeleteUseCase } from './domain/categories/usecases/delete-wallet.usecase';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -153,6 +154,7 @@ const UseCasesProviders = [
   CategoryUpdateUseCase,
   CategoryGetUseCase,
   CategoryGetAllUseCase,
+  CategoryDeleteUseCase,
 ];
 
 @Module({

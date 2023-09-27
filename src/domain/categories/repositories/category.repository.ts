@@ -108,41 +108,7 @@ export class CategoryRepository {
     };
   }
 
-  // async create(data: CreateAccountData): Promise<UserData> {
-  //   const result = await this.user.save({
-  //     name: data.name,
-  //     email: data.email,
-  //     password: data.password,
-  //   });
-  //
-  //   return new UserData(result.name, result.email, result.password, result.id);
-  // }
-
-  // async update(id: number, data: UpdateAccountData): Promise<UserData> {
-  //   const result = await this.user.save({
-  //     id,
-  //     name: data.name,
-  //     email: data.email,
-  //     password: data.password,
-  //   });
-  //
-  //   return new UserData(result.name, result.email, result.password, result.id);
-  // }
-  //
-  // async findById(id: number): Promise<UserData> {
-  //   const result = await this.user.findOneBy({ id });
-  //
-  //   return new UserData(result.name, result.email, result.password, result.id);
-  // }
-  //
-  // async findByEmail(email: string): Promise<UserData | null> {
-  //   const result = await this.user.findOneBy({ email: Equal(email) });
-  //   if (!result) return null;
-  //
-  //   return new UserData(result.name, result.email, result.password, result.id);
-  // }
-  //
-  // async delete(id: number): Promise<void> {
-  //   await this.user.softDelete({ id });
-  // }
+  async delete(id: number, userId: number): Promise<void> {
+    await this.category.softDelete({ id, user_id: userId });
+  }
 }

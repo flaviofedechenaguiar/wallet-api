@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -18,6 +19,7 @@ import { GetCategoryOutput } from '../dtos/get-category.dto';
 import { CategoryGetUseCase } from 'src/domain/categories/usecases/get-category.usecase';
 import { CategoryGetAllUseCase } from 'src/domain/categories/usecases/get-all-category.usecase';
 import { GetAllCategoryOutput } from '../dtos/get-all-category.dto';
+import { CategoryDeleteUseCase } from 'src/domain/categories/usecases/delete-wallet.usecase';
 
 @Controller('categories')
 export class CategoryController {
@@ -26,6 +28,7 @@ export class CategoryController {
     private readonly categoryUpdateUseCase: CategoryUpdateUseCase,
     private readonly categoryGetUseCase: CategoryGetUseCase,
     private readonly categoryGetAllUseCase: CategoryGetAllUseCase,
+    private readonly categoryDeleteUseCase: CategoryDeleteUseCase,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -100,5 +103,16 @@ export class CategoryController {
         data: category.icon.data,
       },
     }));
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Delete(':id')
+  async destroy(
+    @Request() request: Request,
+    @Param('id') id: string,
+  ): Promise<void> {
+    const userId = request['userId'];
+    await this.categoryDeleteUseCase.execute(+id, +userId);
   }
 }
