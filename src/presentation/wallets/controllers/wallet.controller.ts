@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -20,6 +21,7 @@ import { WalletGetUseCase } from 'src/domain/wallets/usecases/get-wallet.usecase
 import { GetAllWalletOutput } from '../dtos/get-all-wallet.dto';
 import { WalletGetAllUseCase } from 'src/domain/wallets/usecases/get-all-wallet.usecase';
 import { GetWalletOutput } from '../dtos/get-wallet.dto';
+import { WalletDeleteUseCase } from 'src/domain/wallets/usecases/delete-wallet.usecase';
 
 @Controller('wallets')
 export class WalletController {
@@ -28,6 +30,7 @@ export class WalletController {
     private readonly walletUpdateUseCase: WalletUpdateUseCase,
     private readonly walletGetUseCase: WalletGetUseCase,
     private readonly walletGetAllUseCase: WalletGetAllUseCase,
+    private readonly walletDeleteUseCase: WalletDeleteUseCase,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -98,5 +101,16 @@ export class WalletController {
       amount: wallet.amount,
       user_id: wallet.userId,
     }));
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Delete(':id')
+  async destroy(
+    @Request() request: Request,
+    @Param('id') id: string,
+  ): Promise<void> {
+    const userId = request['userId'];
+    await this.walletDeleteUseCase.execute(+id, +userId);
   }
 }

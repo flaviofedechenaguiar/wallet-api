@@ -94,4 +94,8 @@ export class WalletRepository {
       userId: result.user_id,
     };
   }
+
+  async delete(id: number, userId: number): Promise<void> {
+    await this.wallet.softDelete({ id, user_id: userId });
+  }
 }
