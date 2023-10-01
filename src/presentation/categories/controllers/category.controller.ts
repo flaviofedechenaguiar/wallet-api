@@ -20,6 +20,8 @@ import { CategoryGetUseCase } from 'src/domain/categories/usecases/get-category.
 import { CategoryGetAllUseCase } from 'src/domain/categories/usecases/get-all-category.usecase';
 import { GetAllCategoryOutput } from '../dtos/get-all-category.dto';
 import { CategoryDeleteUseCase } from 'src/domain/categories/usecases/delete-wallet.usecase';
+import { IconGetAllUseCase } from 'src/domain/categories/usecases/get-all-icon.usecase';
+import { GetAllIconOutput } from '../dtos/get-all-icon.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -29,6 +31,7 @@ export class CategoryController {
     private readonly categoryGetUseCase: CategoryGetUseCase,
     private readonly categoryGetAllUseCase: CategoryGetAllUseCase,
     private readonly categoryDeleteUseCase: CategoryDeleteUseCase,
+    private readonly iconGetAllUseCase: IconGetAllUseCase,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -61,6 +64,13 @@ export class CategoryController {
       userId: userId,
       iconId: body.icon_id,
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Get('icons')
+  async showIcons(): Promise<GetAllIconOutput> {
+    return await this.iconGetAllUseCase.execute();
   }
 
   @UseGuards(AuthGuard)

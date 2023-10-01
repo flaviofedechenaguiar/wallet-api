@@ -38,6 +38,8 @@ import { CategoryGetUseCase } from './domain/categories/usecases/get-category.us
 import { CategoryGetAllUseCase } from './domain/categories/usecases/get-all-category.usecase';
 import { WalletDeleteUseCase } from './domain/wallets/usecases/delete-wallet.usecase';
 import { CategoryDeleteUseCase } from './domain/categories/usecases/delete-wallet.usecase';
+import { IconRepository } from './domain/categories/repositories/icon.repository';
+import { IconGetAllUseCase } from './domain/categories/usecases/get-all-icon.usecase';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -155,6 +157,7 @@ const UseCasesProviders = [
   CategoryGetUseCase,
   CategoryGetAllUseCase,
   CategoryDeleteUseCase,
+  IconGetAllUseCase,
 ];
 
 @Module({
@@ -164,6 +167,7 @@ const UseCasesProviders = [
     UserRepository,
     WalletRepository,
     CategoryRepository,
+    IconRepository,
 
     //ANCHOR: Others
     JWTAuthentication,
