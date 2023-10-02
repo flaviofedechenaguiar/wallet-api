@@ -17,7 +17,7 @@ export class UserUpdateAccountUseCase implements IUseCase {
     if (userWithSameEmail && !isSameUser)
       throw new DomainError('Email already existis.');
 
-    let encryptedPassword = null;
+    let encryptedPassword = undefined;
     if (data.password)
       encryptedPassword = await this.encrypt.hash(data.password);
 
