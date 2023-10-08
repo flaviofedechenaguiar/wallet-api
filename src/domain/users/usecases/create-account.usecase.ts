@@ -13,7 +13,7 @@ export class UserCreateAccountUseCase implements IUseCase {
 
   async execute(data: CreateAccountInput): Promise<void> {
     const userWithSameEmail = await this.userRepository.findByEmail(data.email);
-    if (userWithSameEmail) throw new DomainError('Email already existis.');
+    if (userWithSameEmail) throw new DomainError('email', 'Email já existe');
 
     const encryptedPassword = await this.encrypt.hash(data.password);
 

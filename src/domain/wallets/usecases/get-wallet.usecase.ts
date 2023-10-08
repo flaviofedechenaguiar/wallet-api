@@ -11,7 +11,7 @@ export class WalletGetUseCase implements IUseCase {
 
   async execute({ id, userId }: GetWalletInput): Promise<WalletData> {
     const wallet = await this.walletRepository.findByIdAndUserId(id, userId);
-    if (!wallet) throw new DomainError('Wallet not found');
+    if (!wallet) throw new DomainError('carteira', 'Carteira não encontrada');
 
     return wallet;
   }

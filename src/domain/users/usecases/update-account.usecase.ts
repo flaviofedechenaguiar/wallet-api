@@ -15,7 +15,7 @@ export class UserUpdateAccountUseCase implements IUseCase {
     const userWithSameEmail = await this.userRepository.findByEmail(data.email);
     const isSameUser = userWithSameEmail?.id === data.id;
     if (userWithSameEmail && !isSameUser)
-      throw new DomainError('Email already existis.');
+      throw new DomainError('email', 'Email já existe');
 
     let encryptedPassword = undefined;
     if (data.password)

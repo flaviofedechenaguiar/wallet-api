@@ -21,7 +21,8 @@ export class CategoryUpdateUseCase implements IUseCase {
     const isSameOrNoCategory =
       !hasCategoryWithSameSlug || hasCategoryWithSameSlug.id === data.id;
 
-    if (!isSameOrNoCategory) throw new DomainError('Category already existis');
+    if (!isSameOrNoCategory)
+      throw new DomainError('description', 'Categoria já existente');
 
     this.categoryRepository.update(data.id, { slug, ...data });
   }

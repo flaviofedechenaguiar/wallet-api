@@ -1,5 +1,8 @@
 export class DomainError extends Error {
-  constructor(message: string) {
+  public readonly context: string;
+
+  constructor(context: string, message: string) {
     super(message);
+    this.context = context;
   }
 }

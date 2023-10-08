@@ -14,7 +14,8 @@ export class CategoryGetUseCase implements IUseCase {
       id,
       userId,
     );
-    if (!category) throw new DomainError('Category not found');
+    if (!category)
+      throw new DomainError('category', 'Categoria não encontrada');
 
     return category;
   }

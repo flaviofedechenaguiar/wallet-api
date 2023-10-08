@@ -10,7 +10,7 @@ export class WalletGetAllUseCase implements IUseCase {
 
   async execute(userId: number): Promise<WalletData[]> {
     const wallet = await this.walletRepository.queryAllByUserId(userId);
-    if (!wallet) throw new DomainError('Wallet not found');
+    if (!wallet) throw new DomainError('carteira', 'Carteira não encontrada');
 
     return wallet;
   }

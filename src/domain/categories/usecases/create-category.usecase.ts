@@ -18,7 +18,7 @@ export class CategoryCreateUseCase implements IUseCase {
       await this.categoryRepository.queryBySlugAndUserId(slug, data.userId);
 
     if (hasCategoryWithSameSlug)
-      throw new DomainError('Category already existis');
+      throw new DomainError('description', 'Categoria já existente');
 
     this.categoryRepository.create({ slug, ...data });
   }

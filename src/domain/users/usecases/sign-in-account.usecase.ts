@@ -16,13 +16,14 @@ export class UserLoginUseCase implements IUseCase {
 
   async execute(data: LoginInput): Promise<LoginOutput> {
     const user = await this.userRepository.findByEmail(data.email);
-    if (!user) throw new DomainError('Email/Password incorrect.');
+    if (!user) throw new DomainError('email', 'Email/senha incorretos');
     const isCorrectPassword = await this.encrypt.compare(
       data.password,
       user.password,
     );
 
-    if (!isCorrectPassword) throw new DomainError('Email/Password incorrect.');
+    if (!isCorrectPassword)
+      throw new DomainError('email', 'Email/senha incorretos');
     const token = await this.authentication.sign({ id: user.id });
 
     const hasWallet = Boolean(
