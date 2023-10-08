@@ -3,11 +3,12 @@ import { IBuildSlug } from 'src/domain/contracts/build-slug';
 import { CreateWalletInput } from '../dtos/create-wallet.dto';
 import { WalletRepository } from '../repositories/wallet.repository';
 import { DomainError } from 'src/support/erros/domain.error';
+import { Inject } from '@nestjs/common';
 
 export class WalletCreateUseCase implements IUseCase {
   public constructor(
     private readonly walletRepository: WalletRepository,
-    private readonly buildSlug: IBuildSlug,
+    @Inject(IBuildSlug) private readonly buildSlug: IBuildSlug,
   ) {}
 
   async execute(data: CreateWalletInput): Promise<void> {

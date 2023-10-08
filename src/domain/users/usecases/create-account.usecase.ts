@@ -4,11 +4,12 @@ import { CreateAccountInput } from '../dtos/create-account.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { DomainError } from 'src/support/erros/domain.error';
 import { CreateAccountData } from '../dtos/create-account-data.dto';
+import { Inject } from '@nestjs/common';
 
 export class UserCreateAccountUseCase implements IUseCase {
   public constructor(
     private userRepository: UserRepository,
-    private encrypt: IEncrypt,
+    @Inject(IEncrypt) private encrypt: IEncrypt,
   ) {}
 
   async execute(data: CreateAccountInput): Promise<void> {

@@ -5,13 +5,14 @@ import { UserRepository } from '../repositories/user.repository';
 import { DomainError } from 'src/support/erros/domain.error';
 import { LoginInput, LoginOutput } from '../dtos/sign-in-account.dto';
 import { WalletRepository } from 'src/domain/wallets/repositories/wallet.repository';
+import { Inject } from '@nestjs/common';
 
 export class UserLoginUseCase implements IUseCase {
   public constructor(
     private userRepository: UserRepository,
     private walletRepository: WalletRepository,
-    private encrypt: IEncrypt,
-    private authentication: IJWTAuthentication,
+    @Inject(IEncrypt) private encrypt: IEncrypt,
+    @Inject(IJWTAuthentication) private authentication: IJWTAuthentication,
   ) {}
 
   async execute(data: LoginInput): Promise<LoginOutput> {

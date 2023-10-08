@@ -70,88 +70,21 @@ const EncryptBCryptProvider = {
 };
 
 const UseCasesProviders = [
-  {
-    provide: UserLoginUseCase,
-    useFactory: (
-      userRepository: UserRepository,
-      walletRepository: WalletRepository,
-      encrypt: IEncrypt,
-      authentication: IJWTAuthentication,
-    ) => {
-      return new UserLoginUseCase(
-        userRepository,
-        walletRepository,
-        encrypt,
-        authentication,
-      );
-    },
-    inject: [
-      UserRepository,
-      WalletRepository,
-      EncryptBCrypt,
-      JWTAuthentication,
-    ],
-  },
-  {
-    provide: UserGetAccountUseCaseCase,
-    useFactory: (userRepository: UserRepository) => {
-      return new UserGetAccountUseCaseCase(userRepository);
-    },
-    inject: [UserRepository],
-  },
-  {
-    provide: UserCreateAccountUseCase,
-    useFactory: (userRepository: UserRepository, encrypt: IEncrypt) => {
-      return new UserCreateAccountUseCase(userRepository, encrypt);
-    },
-    inject: [UserRepository, EncryptBCrypt],
-  },
-  {
-    provide: UserUpdateAccountUseCase,
-    useFactory: (userRepository: UserRepository, encrypt: IEncrypt) => {
-      return new UserUpdateAccountUseCase(userRepository, encrypt);
-    },
-    inject: [UserRepository, EncryptBCrypt],
-  },
-  {
-    provide: UserDeleteAccountUseCase,
-    useFactory: (userRepository: UserRepository) => {
-      return new UserDeleteAccountUseCase(userRepository);
-    },
-    inject: [UserRepository],
-  },
-  {
-    provide: UserVerifyAuthenticationUseCase,
-    useFactory: (
-      userRepository: UserRepository,
-      authentication: IJWTAuthentication,
-    ) => {
-      return new UserVerifyAuthenticationUseCase(
-        userRepository,
-        authentication,
-      );
-    },
-    inject: [UserRepository, JWTAuthentication],
-  },
+  UserLoginUseCase,
+  UserGetAccountUseCaseCase,
+  UserCreateAccountUseCase,
+  UserUpdateAccountUseCase,
+  UserDeleteAccountUseCase,
+  UserVerifyAuthenticationUseCase,
 
   //ANCHOR: WALLET
-  {
-    provide: WalletCreateUseCase,
-    useFactory: (walletRepository: WalletRepository, buildSlug: IBuildSlug) => {
-      return new WalletCreateUseCase(walletRepository, buildSlug);
-    },
-    inject: [WalletRepository, SlugifyBuildSlug],
-  },
-  {
-    provide: WalletUpdateUseCase,
-    useFactory: (walletRepository: WalletRepository, buildSlug: IBuildSlug) => {
-      return new WalletUpdateUseCase(walletRepository, buildSlug);
-    },
-    inject: [WalletRepository, SlugifyBuildSlug],
-  },
+  WalletCreateUseCase,
+  WalletUpdateUseCase,
   WalletGetUseCase,
   WalletGetAllUseCase,
   WalletDeleteUseCase,
+
+  //ANCHOR: CATEGORY
   CategoryCreateUseCase,
   CategoryUpdateUseCase,
   CategoryGetUseCase,
@@ -178,6 +111,16 @@ const UseCasesProviders = [
     {
       provide: IBuildSlug,
       useClass: SlugifyBuildSlug,
+    },
+    EncryptBCrypt,
+    {
+      provide: IEncrypt,
+      useClass: EncryptBCrypt,
+    },
+    JWTAuthentication,
+    {
+      provide: IJWTAuthentication,
+      useClass: JWTAuthentication,
     },
   ],
 })

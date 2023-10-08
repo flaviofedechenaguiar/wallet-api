@@ -1,11 +1,13 @@
+import { TypePeriod } from './type-period.enum';
+
 export class DatePeriod {
   private date: Date;
-  private numberOfDays: number;
+  private period: number;
   private lastDate?: Date;
 
-  constructor(date: Date, numberOfDays: number) {
+  constructor(date: Date, period: TypePeriod) {
     this.date = new Date(date);
-    this.numberOfDays = numberOfDays;
+    this.period = period;
   }
 
   getNext(): Date {
@@ -17,7 +19,7 @@ export class DatePeriod {
     }
 
     nextDate = new Date(this.lastDate);
-    nextDate.setDate(this.lastDate.getDate() + this.numberOfDays);
+    nextDate.setDate(this.lastDate.getDate() + this.period);
     this.lastDate = nextDate;
 
     return nextDate;

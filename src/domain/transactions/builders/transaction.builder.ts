@@ -1,16 +1,7 @@
+import { Transaction } from 'typeorm';
+import { TypeSplit } from '../enums/type-split.enum';
 import { DatePeriod } from 'src/utils/DatePeriod';
 import { TransactionStatus } from '../enums/transaction-status.enum';
-import { TypeSplit } from '../enums/type-split.enum';
-
-export class Transaction {
-  constructor(
-    public readonly description: string,
-    public readonly date: Date,
-    public readonly amount: number,
-    public readonly status: TransactionStatus,
-    public readonly note?: string,
-  ) {}
-}
 
 type BuildTransactionData = {
   description: string;
@@ -27,7 +18,9 @@ type BuildTransactionData = {
 
 export class BuildTransactions {
   build(data: BuildTransactionData): Transaction[] {
-    if (!data.split) return [this.createTransaction(data)];
+    if (!data.split) {
+      return [this.createTransaction(data)];
+    }
 
     const period = new DatePeriod(data.date, data.split.period);
     const quantityOfSplits = new Array(data.split.quantity);

@@ -15,6 +15,22 @@ type Input = {
   };
 };
 
+class BuildTransactions {
+  public static build(data: {
+    description: string;
+    date?: Date;
+    amount: number;
+    category_id: number;
+    wallet_id: number;
+    note?: string;
+    status: string;
+    split?: {
+      type: string;
+      total: string;
+      period: number;
+    };
+  }) {}
+}
 
 class Transaction {
   constructor(
@@ -22,12 +38,7 @@ class Transaction {
     public readonly date: Date,
     public readonly amount: number,
     public readonly status: string,
-    public readonly note: string,
-    public readonly split?: {
-      type: string;
-      total: string;
-      period: number;
-    },
+    public readonly note: string, // public readonly split?: { //   type: string; //   total: string; //   period: number; // },
   ) {}
 
   getTransactions(): Transaction[] {
@@ -35,8 +46,11 @@ class Transaction {
       return [this];
     }
 
-    const splitTimes = this.split.period;
+    const transactions = new Array(this.split.period).map(() => {
+      // console.log('teste');
+    });
 
+    const splitTimes = this.split.period;
 
     return [];
   }
