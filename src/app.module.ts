@@ -40,6 +40,7 @@ import { WalletDeleteUseCase } from './domain/wallets/usecases/delete-wallet.use
 import { CategoryDeleteUseCase } from './domain/categories/usecases/delete-wallet.usecase';
 import { IconRepository } from './domain/categories/repositories/icon.repository';
 import { IconGetAllUseCase } from './domain/categories/usecases/get-all-icon.usecase';
+import { DataSource } from 'typeorm';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -48,11 +49,26 @@ const TypeORMEntities = [
   CategoryEntity,
 ];
 
-const TypeORMSettings = TypeOrmModule.forRoot({
-  type: 'sqlite',
-  database: 'database.db',
-  entities: TypeORMEntities,
-  synchronize: true,
+const TypeORMSettings = TypeOrmModule.forRootAsync({
+  useFactory: () => ({
+    type: 'sqlite',
+    database: 'database.db',
+    entities: TypeORMEntities,
+    synchronize: true,
+  }),
+  dataSourceFactory: async (options) => {
+    if (!options) throw new Error('Invalid options passed');
+
+    const configureDeleteCascade = async (AppDataSource: DataSource) => {
+      const appDataSource = await AppDataSource.initialize();
+      const queryRunner = appDataSource.createQueryRunner();
+      await queryRunner.manager.query('PRAGMA foreign_keys=ON;');
+    };
+
+    const AppDataSource = new DataSource(options);
+    configureDeleteCascade(AppDataSource);
+    return AppDataSource;
+  },
 });
 
 const JWTSettings = JwtModule.register({
