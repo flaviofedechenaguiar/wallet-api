@@ -31,7 +31,9 @@ export class CategoryEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @ManyToOne(() => SQLiteUserEntity)
+  @ManyToOne(() => SQLiteUserEntity, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: SQLiteUserEntity;
 
