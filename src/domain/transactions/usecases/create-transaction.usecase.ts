@@ -1,67 +1,42 @@
+import { Injectable } from '@nestjs/common';
 import { IUseCase } from 'src/domain/contracts/usecase.contract';
+import { BuildTransactions } from '../services/build-transaction.service';
+import { TransactionStatus } from '../enums/transaction-status.enum';
+import { TransactionRepository } from '../repositories/transaction.repository';
 
 type Input = {
   description: string;
-  date?: Date;
+  date: Date;
   amount: number;
-  category_id: number;
-  wallet_id: number;
   note?: string;
   status: string;
-  split?: {
-    type: string;
-    total: string;
-    period: number;
-  };
+  installment: number;
+  period: number;
+  walletId: number;
+  categoryId: number;
 };
 
-class BuildTransactions {
-  public static build(data: {
-    description: string;
-    date?: Date;
-    amount: number;
-    category_id: number;
-    wallet_id: number;
-    note?: string;
-    status: string;
-    split?: {
-      type: string;
-      total: string;
-      period: number;
-    };
-  }) {}
-}
-
-class Transaction {
-  constructor(
-    public readonly description: string,
-    public readonly date: Date,
-    public readonly amount: number,
-    public readonly status: string,
-    public readonly note: string, // public readonly split?: { //   type: string; //   total: string; //   period: number; // },
+@Injectable()
+export class CreateTransactionUseCase implements IUseCase {
+  public constructor(
+    private readonly transactionRepository: TransactionRepository,
   ) {}
 
-  getTransactions(): Transaction[] {
-    if (!this.split) {
-      return [this];
-    }
-
-    const transactions = new Array(this.split.period).map(() => {
-      // console.log('teste');
+  async execute(data: Input): Promise<void> {
+    const transactions = BuildTransactions.build({
+      description: data.description,
+      date: data.date,
+      note: data.note,
+      amount: data.amount,
+      period: data.period,
+      status: TransactionStatus[data.status],
+      installment: data.installment,
     });
 
-    const splitTimes = this.split.period;
-
-    return [];
-  }
-
-  buildTransactions(): void {}
-}
-
-export class CreateTransactionUseCase implements IUseCase {
-  public constructor() {}
-
-  async execute(data: Input): Promise<void> {
-    console.log('teste');
+    this.transactionRepository.create(
+      transactions,
+      data.walletId,
+      data.categoryId,
+    );
   }
 }

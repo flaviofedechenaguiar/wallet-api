@@ -1,22 +1,33 @@
-type TransactionInput = {
-  description: string;
-  date: Date;
-  amount: number;
-  status: string;
-  note: string;
-  split?: { type: string; total: number; period: number };
-};
+import { DatePeriod } from 'src/utils/DatePeriod';
+import { Transaction } from '../entities/transaction.entity';
+import { BuildTransactionData } from '../dtos/build-transactions.dto';
+import { v4 as uuid } from 'uuid';
 
-class Transactions {
-  private constructor(
-    public readonly description: string,
-    public readonly date: Date,
-    public readonly amount: number,
-    public readonly status: string,
-    public readonly note: string, // public readonly split?: { //   type: string; //   total: string; //   period: number; // },
-  ) {}
-}
+export class BuildTransactions {
+  private static transactionCode = uuid();
 
-class BuildTransactionsService {
-  build() {}
+  static build(data: BuildTransactionData): Transaction[] {
+    const period = new DatePeriod(data.date, data.period);
+    const quantityOfSplits = new Array(data.installment);
+
+    const transactions = quantityOfSplits.map(() => {
+      return this.createTransaction({
+        ...data,
+        date: period.getNext(),
+      });
+    });
+
+    return transactions;
+  }
+
+  private static createTransaction(data: BuildTransactionData): Transaction {
+    return new Transaction(
+      data.description,
+      data.date,
+      data.amount,
+      data.status,
+      this.transactionCode,
+      data.note,
+    );
+  }
 }

@@ -1,4 +1,5 @@
 export enum TypePeriod {
+  NONE = 0,
   DAILY = 1,
   WEEKLY = 7,
   TWO_WEEKLY = 14,
