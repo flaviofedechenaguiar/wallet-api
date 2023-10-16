@@ -18,7 +18,9 @@ export class WalletCreateUseCase implements IUseCase {
       slug,
       data.userId,
     );
-    if (walletWithSameSlug) throw new DomainError('Wallet already exists.');
+
+    if (walletWithSameSlug)
+      throw new DomainError('description', 'Carteira já existente');
 
     this.walletRepository.create({
       userId: data.userId,

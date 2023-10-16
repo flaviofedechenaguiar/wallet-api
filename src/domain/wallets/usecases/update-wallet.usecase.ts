@@ -22,7 +22,7 @@ export class WalletUpdateUseCase implements IUseCase {
     const hasOtherWalletWithSameSlug =
       foundWallet && data.id !== foundWallet.id;
     if (hasOtherWalletWithSameSlug)
-      throw new DomainError('Wallet already exists.');
+      throw new DomainError('description', 'Carteira já existente');
 
     await this.walletRepository.update(data.id, {
       description: data.description,

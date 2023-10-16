@@ -2,16 +2,18 @@ import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { Match } from 'src/nestjs/match.decorator';
 
 export class UpdateAccountRequest {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'O campo nome não pode estar vazio' })
   name: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'O email inserido não é válido' })
   email: string;
 
   @IsOptional()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'A senha não pode estar vazia' })
   password: string;
 
-  @Match('password')
+  @Match('password', {
+    message: 'A confirmação de senha deve ser igual à senha',
+  })
   confirm_password: string;
 }

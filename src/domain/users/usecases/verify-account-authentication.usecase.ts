@@ -17,7 +17,7 @@ export class UserVerifyAuthenticationUseCase implements IUseCase {
 
       return claims.id as number;
     } catch (err) {
-      throw new DomainError('Access not allowed.');
+      throw new DomainError('authorization', 'Acesso não permitido');
     }
   }
 }

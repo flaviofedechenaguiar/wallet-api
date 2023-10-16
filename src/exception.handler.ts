@@ -13,7 +13,6 @@ export class ExceptionHandler implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    console.log(error.constructor.name);
 
     if (error instanceof HttpException) {
       const httpExceptionResponse = error.getResponse();
@@ -27,9 +26,11 @@ export class ExceptionHandler implements ExceptionFilter {
 
     if (error instanceof DomainError) {
       const badRequest = { error: 'Bad Request', statusCode: 400 };
+      const { context, message } = error;
+      const result = [{ field: context, error: message }];
 
       return response.status(badRequest.statusCode).json({
-        message: error.message,
+        message: result,
         error: badRequest.error,
         statusCode: badRequest.statusCode,
       });

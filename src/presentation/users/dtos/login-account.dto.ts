@@ -1,11 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class LoginAccountRequest {
-  @IsEmail()
+  @IsEmail({}, { message: 'O email inserido não é válido' })
   email: string;
 
-  @IsOptional()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'A senha não pode estar vazia' })
   password: string;
 }
 
