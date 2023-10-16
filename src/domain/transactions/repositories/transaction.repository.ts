@@ -4,7 +4,7 @@ import { Transaction } from '../entities/transaction.entity';
 import { TransactionEntity } from '../models/transaction.model';
 
 export class TransactionRepository {
-  constructor(@InjectDataSource() private dataSource: DataSource) { }
+  constructor(@InjectDataSource() private dataSource: DataSource) {}
 
   private transaction = this.dataSource.getRepository(TransactionEntity);
 
@@ -22,7 +22,7 @@ export class TransactionRepository {
           amount: transaction.amount,
           note: transaction.note,
           status: transaction.status,
-          walletId: walletId,
+          wallet_id: walletId,
           category_id: categoryId,
         });
       }),

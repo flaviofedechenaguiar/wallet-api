@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email010.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"user1@user.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email02.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
+							"raw": "{\n    \"name\": \"flavio\",\n    \"email\": \"email@email010.com\",\n    \"password\": \"password\",\n    \"confirm_password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,7 +85,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"email@email010.com\",\n    \"password\": \"password\"\n}\n\n",
+							"raw": "{\n    \"email\": \"user1@user.com\",\n    \"password\": \"password\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -160,7 +160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"second wallets\",\n    \"amount\": 1002\n}",
+							"raw": "{\n    \"description\": \"second sfwalletss456677 fsdfdsafsda fdsafdsafsda fdsafdsaf dsa fdsaf dsa fsdaf sda fdsaf sdaf dsa788ROLLBACKs; fdsj fds rfds fdsjfds fds\",\n    \"amount\": 1002\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,6 +174,139 @@
 							],
 							"path": [
 								"wallets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/wallets/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"asdf\",\n    \"amount\": 1000.04\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/8",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/9",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 0.1,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"installment\": 300,\n  \"period\": 180,\n  \"walletId\": 32,\n  \"categoryId\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/transactions",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"transactions"
 							]
 						}
 					},
@@ -366,6 +499,30 @@
 				},
 				{
 					"name": "show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{HOST}}/categories",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-icons",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},

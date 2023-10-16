@@ -8,14 +8,12 @@ export class BuildTransactions {
 
   static build(data: BuildTransactionData): Transaction[] {
     const period = new DatePeriod(data.date, data.period);
-    const quantityOfSplits = new Array(data.installment);
+    const quantityOfSplits = Array.from(Array(data.installment).keys());
+    console.log(data);
 
-    const transactions = quantityOfSplits.map(() => {
-      return this.createTransaction({
-        ...data,
-        date: period.getNext(),
-      });
-    });
+    const transactions = quantityOfSplits.map(() =>
+      this.createTransaction({ ...data, date: period.getNext() }),
+    );
 
     return transactions;
   }

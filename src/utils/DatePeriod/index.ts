@@ -1,4 +1,4 @@
-import { TypePeriod } from './type-period.enum';
+import { TypePeriod } from './enum';
 
 export class DatePeriod {
   private date: Date;

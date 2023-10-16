@@ -41,12 +41,17 @@ import { CategoryDeleteUseCase } from './domain/categories/usecases/delete-walle
 import { IconRepository } from './domain/categories/repositories/icon.repository';
 import { IconGetAllUseCase } from './domain/categories/usecases/get-all-icon.usecase';
 import { DataSource } from 'typeorm';
+import { TransactionController } from './presentation/transactions/controllers/transaction.controller';
+import { TransactionEntity } from './domain/transactions/models/transaction.model';
+import { CreateTransactionUseCase } from './domain/transactions/usecases/create-transaction.usecase';
+import { TransactionRepository } from './domain/transactions/repositories/transaction.repository';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
   SQLiteWalletEntity,
   IconEntity,
   CategoryEntity,
+  TransactionEntity,
 ];
 
 const TypeORMSettings = TypeOrmModule.forRootAsync({
@@ -60,13 +65,13 @@ const TypeORMSettings = TypeOrmModule.forRootAsync({
     if (!options) throw new Error('Invalid options passed');
 
     const configureDeleteCascade = async (AppDataSource: DataSource) => {
-      const appDataSource = await AppDataSource.initialize();
-      const queryRunner = appDataSource.createQueryRunner();
+      const queryRunner = AppDataSource.createQueryRunner();
       await queryRunner.manager.query('PRAGMA foreign_keys=ON;');
     };
 
-    const AppDataSource = new DataSource(options);
+    const AppDataSource = await new DataSource(options).initialize();
     configureDeleteCascade(AppDataSource);
+
     return AppDataSource;
   },
 });
@@ -74,7 +79,7 @@ const TypeORMSettings = TypeOrmModule.forRootAsync({
 const JWTSettings = JwtModule.register({
   global: true,
   secret: 'o1tOGLS8KUPmdIDw9VTo2tNLLJXiPGK+LHjhAFY/pCy0yIbW4S2XPFSZAhwi2MBB',
-  signOptions: { expiresIn: '3600s' },
+  signOptions: { expiresIn: '30d' },
 });
 
 const EncryptBCryptProvider = {
@@ -107,16 +112,25 @@ const UseCasesProviders = [
   CategoryGetAllUseCase,
   CategoryDeleteUseCase,
   IconGetAllUseCase,
+
+  //ANCHOR: TRANSACTIONS
+  CreateTransactionUseCase,
 ];
 
 @Module({
   imports: [TypeORMSettings, JWTSettings],
-  controllers: [UserController, WalletController, CategoryController],
+  controllers: [
+    UserController,
+    WalletController,
+    CategoryController,
+    TransactionController,
+  ],
   providers: [
     UserRepository,
     WalletRepository,
     CategoryRepository,
     IconRepository,
+    TransactionRepository,
 
     //ANCHOR: Others
     JWTAuthentication,
