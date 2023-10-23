@@ -293,7 +293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 0.1,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"installment\": 300,\n  \"period\": 180,\n  \"walletId\": 32,\n  \"categoryId\": 5\n}",
+							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 0.1,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"installment\": 304,\n  \"period\": 180,\n  \"walletId\": 32,\n  \"categoryId\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -318,18 +318,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/wallets/:id",
+							"raw": "{{HOST}}/transactions/:wallet_id?month=2023-10-01",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets",
-								":id"
+								"transactions",
+								":wallet_id"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "2023-10-01"
+								}
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "9"
+									"key": "wallet_id",
+									"value": "32"
 								}
 							]
 						}
@@ -349,39 +355,24 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/wallets",
+							"raw": "{{HOST}}/transactions/:wallet_id/:id",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"description\": \"asdf\",\n    \"amount\": 1000.04\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+								"transactions",
+								":wallet_id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "wallet_id",
+									"value": "32"
+								},
+								{
+									"key": "id",
+									"value": "2"
 								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/wallets/8",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"wallets",
-								"8"
 							]
 						}
 					},
@@ -409,6 +400,33 @@
 							"path": [
 								"wallets",
 								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[NOT WORKING] update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"asdf\",\n    \"amount\": 1000.04\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/wallets/8",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"wallets",
+								"8"
 							]
 						}
 					},

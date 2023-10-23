@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
   HttpCode,
+  Param,
   Post,
   Query,
   Request,
@@ -19,6 +22,11 @@ import {
 } from 'class-validator';
 import { CreateTransactionUseCase } from 'src/domain/transactions/usecases/create-transaction.usecase';
 import { TransactionStatus } from 'src/domain/transactions/enums/transaction-status.enum';
+import { Between, DataSource } from 'typeorm';
+import { TransactionEntity } from 'src/domain/transactions/models/transaction.model';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
+import { DomainError } from 'src/support/erros/domain.error';
 
 class StoreTransactionRequest {
   @IsNotEmpty({ message: 'A descrição é obrigatória' })
@@ -54,7 +62,10 @@ class StoreTransactionRequest {
 
 @Controller('transactions')
 export class TransactionController {
-  constructor(private createTransactionUseCase: CreateTransactionUseCase) {}
+  constructor(
+    @InjectDataSource() private dataSource: DataSource,
+    private createTransactionUseCase: CreateTransactionUseCase,
+  ) {}
 
   @UseGuards(AuthGuard)
   @HttpCode(201)
@@ -85,11 +96,106 @@ export class TransactionController {
 
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  @Post()
+  @Get(':walletId')
   async index(
     @Request() request: Request,
-    @Query('month') month,
+    @Param('walletId') walletId: string,
+    @Query('month') month: string,
   ): Promise<any> {
+    const userId = +request['userId'];
+    const walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
+    const isWalletFromUser = await walletRepository.findOne({
+      where: { id: +walletId, user_id: userId },
+    });
+
+    if (!isWalletFromUser) {
+      throw new DomainError('wallet_id', 'Carteira não encontrada');
+    }
+
     const date = new Date(month);
+
+    const inicioDoMes = new Date(date.getFullYear(), date.getMonth() + 1);
+    const fimDoMes = new Date(
+      inicioDoMes.getFullYear(),
+      inicioDoMes.getMonth() + 1,
+      0,
+    );
+
+    const transactionRepository =
+      this.dataSource.getRepository(TransactionEntity);
+
+    const transactions = await transactionRepository.find({
+      where: { wallet_id: +walletId, date: Between(inicioDoMes, fimDoMes) },
+      relations: ['category.icon'],
+    });
+
+    return transactions;
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Get(':walletId/:id')
+  async show(
+    @Request() request: Request,
+    @Param('walletId') walletId: string,
+    @Param('id') id: string,
+  ): Promise<any> {
+    const userId = +request['userId'];
+    const walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
+    const isWalletFromUser = await walletRepository.findOne({
+      where: { id: +walletId, user_id: userId },
+    });
+
+    if (!isWalletFromUser) {
+      throw new DomainError('wallet_id', 'Carteira não encontrada');
+    }
+
+    const transactionRepository =
+      this.dataSource.getRepository(TransactionEntity);
+
+    const transaction = await transactionRepository.findOne({
+      where: {
+        id: +id,
+        wallet_id: +walletId,
+      },
+      relations: ['category.icon'],
+    });
+
+    return transaction;
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(200)
+  @Delete(':walletId/:id')
+  async delete(
+    @Request() request: Request,
+    @Param('walletId') walletId: string,
+    @Param('id') id: string,
+  ): Promise<any> {
+    const userId = +request['userId'];
+    const walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
+    const walletFromUser = await walletRepository.findOne({
+      where: { id: +walletId, user_id: userId },
+    });
+
+    if (!walletFromUser) {
+      throw new DomainError('wallet_id', 'Carteira não encontrada');
+    }
+
+    const transactionRepository =
+      this.dataSource.getRepository(TransactionEntity);
+
+    const transaction = await transactionRepository.findOne({
+      where: {
+        id: +id,
+        wallet_id: +walletId,
+      },
+    });
+
+    if (!transaction) return;
+
+    transactionRepository.delete({ id: +id, wallet_id: +walletId });
+    const recalculatedAmount = walletFromUser.amount - transaction.amount;
+    walletRepository.save({ id: +walletId, amount: recalculatedAmount });
   }
 }
