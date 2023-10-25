@@ -45,6 +45,7 @@ import { TransactionController } from './presentation/transactions/controllers/t
 import { TransactionEntity } from './domain/transactions/models/transaction.model';
 import { CreateTransactionUseCase } from './domain/transactions/usecases/create-transaction.usecase';
 import { TransactionRepository } from './domain/transactions/repositories/transaction.repository';
+import { MainController } from './presentation/main/controllers/main.controller';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -124,6 +125,7 @@ const UseCasesProviders = [
     WalletController,
     CategoryController,
     TransactionController,
+    MainController,
   ],
   providers: [
     UserRepository,

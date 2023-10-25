@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Put,
   Query,
   Request,
   UseGuards,
@@ -52,6 +53,31 @@ class StoreTransactionRequest {
   @IsPositive({ message: 'O período deve ser um número positivo' })
   @IsNumber({}, { message: 'O período deve ser um número' })
   period: number;
+
+  @IsNumber({}, { message: 'O ID da carteira deve ser um número' })
+  walletId: number;
+
+  @IsNumber({}, { message: 'O ID da categoria deve ser um número' })
+  categoryId: number;
+}
+
+class UpdateTransactionRequest {
+  @IsNotEmpty({ message: 'A descrição é obrigatória' })
+  description: string;
+
+  @IsDateString({}, { message: 'A data deve ser um objeto de data válido' })
+  date: Date;
+
+  @NotEquals(0, { message: 'O valor deve não pode ser 0(zero)' })
+  @IsNumber()
+  amount: number;
+
+  @IsString({ message: 'A nota deve ser uma string' })
+  @IsOptional()
+  note?: string;
+
+  @IsString({ message: 'O status deve ser uma string' })
+  status: string;
 
   @IsNumber({}, { message: 'O ID da carteira deve ser um número' })
   walletId: number;
@@ -197,5 +223,54 @@ export class TransactionController {
     transactionRepository.delete({ id: +id, wallet_id: +walletId });
     const recalculatedAmount = walletFromUser.amount - transaction.amount;
     walletRepository.save({ id: +walletId, amount: recalculatedAmount });
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(201)
+  @Put(':walletId/:id')
+  async update(
+    @Request() request: Request,
+    @Param('walletId') walletId: string,
+    @Param('id') id: string,
+    @Body() body: UpdateTransactionRequest,
+  ): Promise<any> {
+    const userId = request['userId'];
+    const walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
+    const walletFromUser = await walletRepository.findOne({
+      where: { id: +walletId, user_id: userId },
+    });
+
+    if (!walletFromUser) {
+      throw new DomainError('wallet_id', 'Carteira não encontrada');
+    }
+
+    const transactionRepository =
+      this.dataSource.getRepository(TransactionEntity);
+
+    const foundedTransaction = await transactionRepository.findOne({
+      where: { id: +id, wallet_id: +walletId },
+    });
+
+    if (!foundedTransaction) return;
+
+    if (foundedTransaction.amount !== body.amount) {
+      const correctedAmount =
+        walletFromUser.amount - foundedTransaction.amount + body.amount;
+      walletRepository.save({
+        id: +walletId,
+        amount: correctedAmount,
+      });
+    }
+
+    await transactionRepository.save({
+      id: foundedTransaction.id,
+      description: body.description,
+      date: body.date,
+      amount: body.amount,
+      note: body.note,
+      status: body.status,
+      wallet_id: body.walletId,
+      category_id: body.categoryId,
+    });
   }
 }

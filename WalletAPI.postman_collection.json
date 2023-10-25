@@ -406,13 +406,13 @@
 					"response": []
 				},
 				{
-					"name": "[NOT WORKING] update",
+					"name": "update",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"asdf\",\n    \"amount\": 1000.04\n}",
+							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 5,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"walletId\": 32,\n  \"categoryId\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -420,13 +420,24 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/wallets/8",
+							"raw": "{{HOST}}/transactions/:wallet_id/:id",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets",
-								"8"
+								"transactions",
+								":wallet_id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "wallet_id",
+									"value": "32"
+								},
+								{
+									"key": "id",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -591,6 +602,28 @@
 									"key": "id",
 									"value": "3"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"item": [
+				{
+					"name": "main",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/main",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"main"
 							]
 						}
 					},
