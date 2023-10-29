@@ -1,7 +1,9 @@
 import { IUseCase } from 'src/domain/contracts/usecase.contract';
 import { UserRepository } from '../repositories/user.repository';
 import { GetAccountOutput } from '../dtos/get-account.dto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserGetAccountUseCaseCase implements IUseCase {
   public constructor(private userRepository: UserRepository) {}
 
