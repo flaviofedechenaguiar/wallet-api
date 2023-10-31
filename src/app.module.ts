@@ -46,6 +46,7 @@ import { TransactionEntity } from './domain/transactions/models/transaction.mode
 import { CreateTransactionUseCase } from './domain/transactions/usecases/create-transaction.usecase';
 import { TransactionRepository } from './domain/transactions/repositories/transaction.repository';
 import { MainController } from './presentation/main/controllers/main.controller';
+import { PiggyBankEntity } from './domain/piggy-bank/models/piggy-bank.model';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -53,6 +54,7 @@ const TypeORMEntities = [
   IconEntity,
   CategoryEntity,
   TransactionEntity,
+  PiggyBankEntity,
 ];
 
 const TypeORMSettings = TypeOrmModule.forRootAsync({

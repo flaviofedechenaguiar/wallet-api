@@ -1,4 +1,5 @@
 import { CategoryEntity } from 'src/domain/categories/models/category.model';
+import { PiggyBankEntity } from 'src/domain/piggy-bank/models/piggy-bank.model';
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
 import {
   Entity,
@@ -38,8 +39,15 @@ export class TransactionEntity {
   @JoinColumn({ name: 'wallet_id' })
   wallet: SQLiteWalletEntity;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   wallet_id: number;
+
+  @ManyToOne(() => PiggyBankEntity)
+  @JoinColumn({ name: 'piggy_bank_id' })
+  piggy_bank: PiggyBankEntity;
+
+  @Column({ nullable: true })
+  piggy_bank_id: number;
 
   @ManyToOne(() => CategoryEntity)
   @JoinColumn({ name: 'category_id' })
