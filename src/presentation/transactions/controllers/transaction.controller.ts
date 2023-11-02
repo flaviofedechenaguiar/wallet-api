@@ -140,7 +140,7 @@ export class TransactionController {
 
     const date = new Date(month);
 
-    const inicioDoMes = new Date(date.getFullYear(), date.getMonth() + 1);
+    const inicioDoMes = new Date(date.getFullYear(), date.getMonth());
     const fimDoMes = new Date(
       inicioDoMes.getFullYear(),
       inicioDoMes.getMonth() + 1,
