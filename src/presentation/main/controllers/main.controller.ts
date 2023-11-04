@@ -39,8 +39,6 @@ export class MainController {
       0,
     );
 
-    console.log({ inicioDoMes, fimDoMes });
-
     const recipesData = await Promise.all(
       wallets.map(async (wallet) => {
         return await transactionRepository.find({

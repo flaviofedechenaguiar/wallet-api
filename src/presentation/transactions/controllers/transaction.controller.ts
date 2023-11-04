@@ -23,11 +23,12 @@ import {
 } from 'class-validator';
 import { CreateTransactionUseCase } from 'src/domain/transactions/usecases/create-transaction.usecase';
 import { TransactionStatus } from 'src/domain/transactions/enums/transaction-status.enum';
-import { Between, DataSource } from 'typeorm';
+import { Between, DataSource, In, LessThan, MoreThan } from 'typeorm';
 import { TransactionEntity } from 'src/domain/transactions/models/transaction.model';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
 import { DomainError } from 'src/support/erros/domain.error';
+import { getFirstAndLastDateOfMonth } from 'src/utils/GetFirstAndLastDateOfMonth';
 
 class StoreTransactionRequest {
   @IsNotEmpty({ message: 'A descrição é obrigatória' })
@@ -122,36 +123,54 @@ export class TransactionController {
 
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  @Get(':walletId')
+  @Get()
   async index(
     @Request() request: Request,
-    @Param('walletId') walletId: string,
+    @Query('type') type: string,
+    @Query('wallet_id') walletId: string,
     @Query('month') month: string,
   ): Promise<any> {
     const userId = +request['userId'];
     const walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
-    const isWalletFromUser = await walletRepository.findOne({
-      where: { id: +walletId, user_id: userId },
+
+    const filterByWallet = walletId ? +walletId : null;
+    const filterByType = ['receita', 'despesa'].includes(type) ? type : null;
+    const filterByMonth = !!month;
+
+    const wallets = await walletRepository.find({
+      where: {
+        user_id: userId,
+        ...(filterByWallet && { id: filterByWallet }),
+      },
     });
 
-    if (!isWalletFromUser) {
+    if (wallets.length == 0) {
       throw new DomainError('wallet_id', 'Carteira não encontrada');
     }
-
-    const date = new Date(month);
-
-    const inicioDoMes = new Date(date.getFullYear(), date.getMonth() + 1);
-    const fimDoMes = new Date(
-      inicioDoMes.getFullYear(),
-      inicioDoMes.getMonth() + 1,
-      0,
-    );
 
     const transactionRepository =
       this.dataSource.getRepository(TransactionEntity);
 
+    let inicioDoMes = null;
+    let fimDoMes = null;
+    if (filterByMonth) {
+      const date = new Date(month);
+      const { firstDate, lastDate } = getFirstAndLastDateOfMonth(date);
+      inicioDoMes = firstDate;
+      fimDoMes = lastDate;
+    }
+
+    const walletIds = wallets.map((wallet) => wallet.id);
     const transactions = await transactionRepository.find({
-      where: { wallet_id: +walletId, date: Between(inicioDoMes, fimDoMes) },
+      where: {
+        wallet_id: In(walletIds),
+        ...(filterByMonth && {
+          date: Between(inicioDoMes, fimDoMes),
+        }),
+        ...(filterByType && {
+          amount: type == 'receita' ? MoreThan(0) : LessThan(0),
+        }),
+      },
       relations: ['category.icon'],
     });
 
