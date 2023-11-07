@@ -22,6 +22,9 @@ export class PiggyBankEntity {
   final_date: Date;
 
   @Column('decimal', { precision: 8, scale: 2, default: 0 })
+  final_amount: number;
+
+  @Column('decimal', { precision: 8, scale: 2, default: 0 })
   amount: number;
 
   @ManyToOne(() => SQLiteUserEntity, {
