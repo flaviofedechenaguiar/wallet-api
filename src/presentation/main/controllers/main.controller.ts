@@ -5,7 +5,10 @@ import { Between, DataSource, LessThan, MoreThan } from 'typeorm';
 import { TransactionEntity } from 'src/domain/transactions/models/transaction.model';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
-import { getFirstAndLastDateOfMonth } from 'src/utils/GetFirstAndLastDateOfMonth';
+import {
+  buildDate,
+  getFirstAndLastDateOfMonth,
+} from 'src/utils/GetFirstAndLastDateOfMonth';
 
 @Controller('main')
 export class MainController {
@@ -31,7 +34,7 @@ export class MainController {
       return (accumulator += wallet.amount);
     }, 0);
 
-    const date = new Date();
+    const date = buildDate();
     const { firstDate, lastDate } = getFirstAndLastDateOfMonth(date);
 
     const recipesData = await Promise.all(
