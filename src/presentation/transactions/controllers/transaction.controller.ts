@@ -203,7 +203,7 @@ export class TransactionController {
         id: +id,
         wallet_id: +walletId,
       },
-      relations: ['category.icon'],
+      relations: ['category.icon', 'wallet'],
     });
 
     return transaction;
