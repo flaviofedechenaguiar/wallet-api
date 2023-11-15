@@ -4,6 +4,7 @@ import { BuildTransactions } from '../services/build-transaction.service';
 import { TransactionStatus } from '../enums/transaction-status.enum';
 import { TransactionRepository } from '../repositories/transaction.repository';
 import { WalletRepository } from 'src/domain/wallets/repositories/wallet.repository';
+import { DomainError } from 'src/support/erros/domain.error';
 
 type Input = {
   description: string;
@@ -40,6 +41,8 @@ export class CreateTransactionUseCase implements IUseCase {
       data.walletId,
       data.userId,
     );
+
+    if (!wallet) throw new DomainError('walletId', 'Carteira nao encontrada');
 
     const totalTransactions = transactions.reduce(
       (acc, current) => acc + current.amount,

@@ -28,7 +28,10 @@ import { TransactionEntity } from 'src/domain/transactions/models/transaction.mo
 import { InjectDataSource } from '@nestjs/typeorm';
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
 import { DomainError } from 'src/support/erros/domain.error';
-import { getFirstAndLastDateOfMonth } from 'src/utils/GetFirstAndLastDateOfMonth';
+import {
+  buildDate,
+  getFirstAndLastDateOfMonth,
+} from 'src/utils/GetFirstAndLastDateOfMonth';
 
 class StoreTransactionRequest {
   @IsNotEmpty({ message: 'A descrição é obrigatória' })
@@ -154,7 +157,7 @@ export class TransactionController {
     let inicioDoMes = null;
     let fimDoMes = null;
     if (filterByMonth) {
-      const date = new Date(month);
+      const date = buildDate(month);
       const { firstDate, lastDate } = getFirstAndLastDateOfMonth(date);
       inicioDoMes = firstDate;
       fimDoMes = lastDate;
@@ -203,7 +206,7 @@ export class TransactionController {
         id: +id,
         wallet_id: +walletId,
       },
-      relations: ['category.icon'],
+      relations: ['category.icon', 'wallet'],
     });
 
     return transaction;

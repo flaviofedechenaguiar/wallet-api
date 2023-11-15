@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "57a099e3-e7ca-4845-9e79-6e7e75730a63",
+		"_postman_id": "04107eab-0fa9-4cd8-bd8d-44bf0c93890b",
 		"name": "WalletAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27050444"
@@ -185,19 +185,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/wallets/:id",
+							"raw": "{{HOST}}/wallets",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "9"
-								}
+								"wallets"
 							]
 						}
 					},
@@ -216,12 +209,19 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/wallets",
+							"raw": "{{HOST}}/wallets/:id",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"wallets"
+								"wallets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -293,7 +293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 0.1,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"installment\": 304,\n  \"period\": 180,\n  \"walletId\": 32,\n  \"categoryId\": 5\n}",
+							"raw": "{\n  \"description\": \"Transação de teste\",\n  \"date\": \"2023-10-11T22:50:05.000Z\",\n  \"amount\": 0.1,\n  \"note\": \"Esta é uma nota opcional\",\n  \"status\": \"nao_pago\",\n  \"installment\": 304,\n  \"period\": 180,\n  \"walletId\": 10,\n  \"categoryId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -318,24 +318,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/transactions/:wallet_id?month=2023-10-01",
+							"raw": "{{HOST}}/transactions?month=2023-10-01&wallet_id=10&type=receita",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"transactions",
-								":wallet_id"
+								"transactions"
 							],
 							"query": [
 								{
 									"key": "month",
 									"value": "2023-10-01"
-								}
-							],
-							"variable": [
+								},
 								{
 									"key": "wallet_id",
-									"value": "32"
+									"value": "10"
+								},
+								{
+									"key": "type",
+									"value": "receita",
+									"description": "receita ou despesa"
 								}
 							]
 						}
@@ -367,7 +369,7 @@
 							"variable": [
 								{
 									"key": "wallet_id",
-									"value": "32"
+									"value": "10"
 								},
 								{
 									"key": "id",
@@ -514,13 +516,12 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/categories/2",
+							"raw": "{{HOST}}/categories",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"categories",
-								"2"
+								"categories"
 							]
 						}
 					},
@@ -539,12 +540,19 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{HOST}}/categories",
+							"raw": "{{HOST}}/categories/:id",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"categories"
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
 							]
 						}
 					},
