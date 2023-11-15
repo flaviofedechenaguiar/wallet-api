@@ -66,6 +66,19 @@ class UpdatePiggyRequest {
   final_amount: number;
 }
 
+class TransferPiggyRequest {
+  @IsNumber({}, { message: 'O ID da carteira deve ser um número' })
+  wallet_id: number;
+
+  @IsNumber({}, { message: 'O ID do porquinho deve ser um número' })
+  piggy_id: number;
+
+  @NotEquals(0, { message: 'O valor deve não pode ser 0(zero)' })
+  @IsPositive({ message: 'O valor deve ser positivo' })
+  @IsNumber()
+  amount: number;
+}
+
 @Controller('piggy')
 export class PiggyBankController {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
@@ -135,6 +148,70 @@ export class PiggyBankController {
       ...foundedWallet,
       amount: foundedWallet.amount - transactionAmountWallet,
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(201)
+  @Post('/transfer')
+  async transfer(
+    @Request() request: Request,
+    @Body() body: TransferPiggyRequest,
+  ): Promise<void> {
+    const userId = +request['userId'];
+
+       
+
+    // const foundedWallet = await this.walletRepository.findOne({
+    //   where: { id: body.wallet_id },
+    // });
+    //
+    // const foundedPiggy = await this.piggyBankRepository.findOne({
+    //   where: { name: body.name, user_id: userId },
+    // });
+    //
+    // if (foundedPiggy)
+    //   throw new DomainError('name', 'Porquinho presente com mesmo nome');
+    //
+    // if (foundedWallet.amount < body.initial_value) {
+    //   throw new DomainError(
+    //     'wallet_id',
+    //     'Carteira não possui saldo suficiente',
+    //   );
+    // }
+    //
+    // const createdPiggy = await this.piggyBankRepository.save({
+    //   name: body.name,
+    //   final_amount: body.final_amount,
+    //   amount: body.initial_value,
+    //   final_date: body.final_date,
+    //   user_id: userId,
+    // });
+    //
+    // await this.transactionRepository.save({
+    //   description: `Transferencia recebida de ${foundedWallet.description}`,
+    //   amount: body.initial_value,
+    //   date: new Date(),
+    //   status: TransactionStatus.PAIED,
+    //   piggy_bank_id: createdPiggy.id,
+    //   category_id: 1,
+    //   transaction_code: uuid(),
+    // });
+    //
+    // const transactionAmountWallet = body.initial_value;
+    // await this.transactionRepository.save({
+    //   description: `Transferencia para ${body.name}`,
+    //   amount: transactionAmountWallet * -1,
+    //   date: new Date(),
+    //   status: TransactionStatus.PAIED,
+    //   wallet_id: body.wallet_id,
+    //   category_id: 1,
+    //   transaction_code: uuid(),
+    // });
+    //
+    // await this.walletRepository.save({
+    //   ...foundedWallet,
+    //   amount: foundedWallet.amount - transactionAmountWallet,
+    // });
   }
 
   @UseGuards(AuthGuard)
