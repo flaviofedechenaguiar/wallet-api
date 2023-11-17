@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "04107eab-0fa9-4cd8-bd8d-44bf0c93890b",
+		"_postman_id": "0f7629fd-d734-454e-92ae-1f05a85929e4",
 		"name": "WalletAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27050444"
@@ -284,6 +284,199 @@
 			]
 		},
 		{
+			"name": "Piggy",
+			"item": [
+				{
+					"name": "store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"new piggys\",\n    \"final_date\": \"2023-12-01\",\n    \"final_amount\": 100.0,\n    \"initial_value\": 10,\n    \"wallet_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"wallet_id\": 1,\n    \"piggy_id\": 1,\n    \"amount\": 0.4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy/transfer",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "withdraw",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"wallet_id\": 1,\n    \"piggy_id\": 1,\n    \"amount\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy/withdraw",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy",
+								"withdraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index [CRIAR ROTA]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/piggy",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show [CRIAR ROTA]",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"new name piggy\",\n    \"final_date\": \"2024-01-01\",\n    \"final_amount\": 200.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy/:id",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/piggy/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"piggy",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Transactions",
 			"item": [
 				{
@@ -318,7 +511,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/transactions?month=2023-10-01&wallet_id=10&type=receita",
+							"raw": "{{HOST}}/transactions?month=2023-11-01",
 							"host": [
 								"{{HOST}}"
 							],
@@ -327,17 +520,19 @@
 							],
 							"query": [
 								{
-									"key": "month",
-									"value": "2023-10-01"
-								},
-								{
 									"key": "wallet_id",
-									"value": "10"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "type",
 									"value": "receita",
-									"description": "receita ou despesa"
+									"description": "receita ou despesa",
+									"disabled": true
+								},
+								{
+									"key": "month",
+									"value": "2023-11-01"
 								}
 							]
 						}
