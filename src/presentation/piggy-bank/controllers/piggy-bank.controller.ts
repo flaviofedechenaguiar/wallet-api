@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
@@ -23,6 +24,7 @@ import { TransactionEntity } from 'src/domain/transactions/models/transaction.mo
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
 import { AuthGuard } from 'src/presentation/users/guards/auth.guard';
 import { DomainError } from 'src/support/erros/domain.error';
+import { round } from 'src/utils/Decimal';
 import { DataSource } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -103,15 +105,42 @@ export class PiggyBankController {
 
   @UseGuards(AuthGuard)
   @HttpCode(201)
-  @Post()
+  @Get()
   async index(@Request() request: Request): Promise<any> {
     const userId = +request['userId'];
 
-    const piggies = await this.piggyBankRepository.find({
+    let piggies = await this.piggyBankRepository.find({
       where: { user_id: userId },
     });
 
+    piggies = piggies.map((piggy) => {
+      const progress = piggy.amount / piggy.final_amount;
+      return { ...piggy, progress };
+    });
+
     return piggies;
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(201)
+  @Get(':id')
+  async show(
+    @Param('id') id: string,
+    @Request() request: Request,
+  ): Promise<any> {
+    const userId = +request['userId'];
+
+    const piggy = await this.piggyBankRepository.findOne({
+      where: { id: +id, user_id: userId },
+    });
+
+    if (!piggy) throw new DomainError('id', 'Porquinho não encontrado');
+
+    const transactions = await this.transactionRepository.find({
+      where: { piggy_bank_id: +id },
+    });
+
+    return { piggy, transactions };
   }
 
   @UseGuards(AuthGuard)
@@ -226,7 +255,8 @@ export class PiggyBankController {
 
     if (!foundedPiggy) throw new DomainError('id', 'Porquinho não econtrado');
 
-    if (foundedPiggy.amount > 0)
+    const roundedAmount = round(foundedPiggy.amount, 2);
+    if (roundedAmount > 0)
       throw new DomainError(
         'id',
         'Faça a transferência de todo o valor para que possa ser deletedo o porquinho',

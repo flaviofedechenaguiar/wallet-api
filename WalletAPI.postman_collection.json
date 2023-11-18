@@ -367,7 +367,7 @@
 					"response": []
 				},
 				{
-					"name": "index [CRIAR ROTA]",
+					"name": "index",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -384,7 +384,7 @@
 					"response": []
 				},
 				{
-					"name": "show [CRIAR ROTA]",
+					"name": "show",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -407,7 +407,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "10"
+									"value": "2"
 								}
 							]
 						}
