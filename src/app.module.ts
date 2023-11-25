@@ -48,6 +48,7 @@ import { TransactionRepository } from './domain/transactions/repositories/transa
 import { MainController } from './presentation/main/controllers/main.controller';
 import { PiggyBankEntity } from './domain/piggy-bank/models/piggy-bank.model';
 import { PiggyBankController } from './presentation/piggy-bank/controllers/piggy-bank.controller';
+import { ExportDataController } from './presentation/export-data/controllers/export-data.controller';
 
 const TypeORMEntities = [
   SQLiteUserEntity,
@@ -130,6 +131,7 @@ const UseCasesProviders = [
     TransactionController,
     MainController,
     PiggyBankController,
+    ExportDataController,
   ],
   providers: [
     UserRepository,

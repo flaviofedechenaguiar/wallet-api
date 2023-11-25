@@ -833,6 +833,42 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "ExportData",
+			"item": [
+				{
+					"name": "export",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/export-data?start_date=2023-11-01&end_date=2023-11-30&wallet_id=1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"export-data"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2023-11-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2023-11-30"
+								},
+								{
+									"key": "wallet_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {

@@ -1,3 +1,4 @@
+import { TransactionEntity } from 'src/domain/transactions/models/transaction.model';
 import { SQLiteUserEntity } from 'src/domain/users/models/user.model';
 import {
   Entity,
@@ -8,6 +9,7 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'wallets' })
@@ -41,4 +43,7 @@ export class SQLiteWalletEntity {
 
   @Column({ nullable: false })
   user_id: number;
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.wallet)
+  transactions: TransactionEntity[];
 }
