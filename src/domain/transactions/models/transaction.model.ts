@@ -49,6 +49,9 @@ export class TransactionEntity {
   @Column({ nullable: true })
   piggy_bank_id: number;
 
+  @Column('boolean', { default: true })
+  canUpdate?: boolean;
+
   @ManyToOne(() => CategoryEntity)
   @JoinColumn({ name: 'category_id' })
   category: SQLiteWalletEntity;

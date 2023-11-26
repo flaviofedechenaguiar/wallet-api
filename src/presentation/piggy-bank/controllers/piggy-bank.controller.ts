@@ -186,6 +186,7 @@ export class PiggyBankController {
       piggy_bank_id: createdPiggy.id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
 
     const transactionAmountWallet = body.initial_value;
@@ -197,6 +198,7 @@ export class PiggyBankController {
       wallet_id: body.wallet_id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
 
     await this.walletRepository.save({
@@ -314,6 +316,7 @@ export class PiggyBankController {
       wallet_id: foundedWallet.id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
 
     await this.transactionRepository.save({
@@ -324,6 +327,7 @@ export class PiggyBankController {
       piggy_bank_id: foundedPiggy.id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
   }
 
@@ -376,6 +380,7 @@ export class PiggyBankController {
       wallet_id: foundedWallet.id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
 
     await this.transactionRepository.save({
@@ -386,6 +391,7 @@ export class PiggyBankController {
       piggy_bank_id: foundedPiggy.id,
       category_id: 1,
       transaction_code: uuid(),
+      canUpdate: false,
     });
   }
 }

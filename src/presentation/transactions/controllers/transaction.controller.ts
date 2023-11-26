@@ -270,10 +270,11 @@ export class TransactionController {
       this.dataSource.getRepository(TransactionEntity);
 
     const foundedTransaction = await transactionRepository.findOne({
-      where: { id: +id, wallet_id: +walletId },
+      where: { id: +id, wallet_id: +walletId, canUpdate: true },
     });
 
-    if (!foundedTransaction) return;
+    if (!foundedTransaction)
+      throw new DomainError('id', 'Transação não pode ser atualizada');
 
     if (foundedTransaction.amount !== body.amount) {
       const correctedAmount =
