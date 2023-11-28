@@ -1,7 +1,15 @@
-import { Controller, Get, Query, Request, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Response } from 'express';
 import { SQLiteWalletEntity } from 'src/domain/wallets/models/wallet.model';
+import { AuthGuard } from 'src/presentation/users/guards/auth.guard';
 import { buildDate } from 'src/utils/GetFirstAndLastDateOfMonth';
 import { DataSource } from 'typeorm';
 import * as XLSX from 'xlsx';
@@ -12,6 +20,7 @@ export class ExportDataController {
 
   private walletRepository = this.dataSource.getRepository(SQLiteWalletEntity);
 
+  @UseGuards(AuthGuard)
   @Get()
   async exports(
     @Res() res: Response,

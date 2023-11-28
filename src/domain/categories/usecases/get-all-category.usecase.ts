@@ -12,6 +12,6 @@ export class CategoryGetAllUseCase implements IUseCase {
       userId,
     );
 
-    return categories;
+    return categories.filter((category) => category.iconId !== 1);
   }
 }

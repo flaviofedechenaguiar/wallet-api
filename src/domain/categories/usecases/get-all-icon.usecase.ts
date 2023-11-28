@@ -10,10 +10,12 @@ export class IconGetAllUseCase implements IUseCase {
   async execute(): Promise<IconData[]> {
     const icons = await this.iconRepository.queryAll();
 
-    return icons.map((icon) => ({
-      id: icon.id,
-      desription: icon.desription,
-      data: icon.data,
-    }));
+    return icons
+      .filter((icon) => icon.id !== 1)
+      .map((icon) => ({
+        id: icon.id,
+        desription: icon.desription,
+        data: icon.data,
+      }));
   }
 }
