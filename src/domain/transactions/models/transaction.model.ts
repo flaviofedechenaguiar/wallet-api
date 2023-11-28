@@ -42,7 +42,9 @@ export class TransactionEntity {
   @Column({ nullable: true })
   wallet_id: number;
 
-  @ManyToOne(() => PiggyBankEntity)
+  @ManyToOne(() => PiggyBankEntity, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'piggy_bank_id' })
   piggy_bank: PiggyBankEntity;
 
