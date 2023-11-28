@@ -222,6 +222,12 @@ export class PiggyBankController {
 
     if (!foundedPiggy) throw new DomainError('id', 'Porquinho não encontrado');
 
+    if (body.final_amount < foundedPiggy.final_amount)
+      throw new DomainError(
+        'id',
+        'Porquinho não pode ter valor final menor que o anterior',
+      );
+
     const foundedPiggyWithSameName = await this.piggyBankRepository.findOne({
       where: { name: body.name, user_id: userId },
     });
