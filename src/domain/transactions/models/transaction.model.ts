@@ -35,7 +35,9 @@ export class TransactionEntity {
   @Column({ nullable: true })
   note?: string;
 
-  @ManyToOne(() => SQLiteWalletEntity)
+  @ManyToOne(() => SQLiteWalletEntity, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'wallet_id' })
   wallet: SQLiteWalletEntity;
 
